@@ -3,12 +3,14 @@ package com.codecool.javaee;
 public class AnnoClass {
 
     @WebRoute( path = "/test")
-    public static void niceMethod(){
+    public static String niceMethod(){
         System.out.println("This happens in the body of the method");
+        return "Test";
     }
 
     @WebRoute( path = "/other")
-    public static void otherNiceMethod(){
+    public static String otherNiceMethod(){
         System.out.println("This happens otherwise");
+        return "Other";
     }
 }

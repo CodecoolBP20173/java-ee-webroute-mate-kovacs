@@ -29,26 +29,26 @@ public class Main {
 
     static class MyHandler implements HttpHandler {
         @Override
-        public void handle(HttpExchange t) throws IOException {
+        public void handle(HttpExchange exchange) throws IOException {
 
-            String path = t.getRequestURI().toString();
+            String path = exchange.getRequestURI().toString();
+            String response = "";
 
             try {
                 for (Method method : Class.forName("com.codecool.javaee.AnnoClass").getMethods()) {
                     WebRoute route = method.getAnnotation(WebRoute.class);
                     if (route.path().equals(path)) {
-                        method.invoke(null);
+                        response = method.invoke(null).toString();
                     }
                 }
             } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException ex){
                 ex.printStackTrace();
             }
 
-//            String response = "This is the response";
-//            t.sendResponseHeaders(200, response.length());
-//            OutputStream os = t.getResponseBody();
-//            os.write(response.getBytes());
-//            os.close();
+            exchange.sendResponseHeaders(200, response.length());
+            OutputStream os = exchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
         }
     }
 
